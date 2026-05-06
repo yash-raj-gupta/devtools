@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" aria-label="Toolbench">
+  <defs>
+    <linearGradient id="b" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8c478"/>
+      <stop offset="0.55" stop-color="#b87333"/>
+      <stop offset="1" stop-color="#7a4818"/>
+    </linearGradient>
+    <radialGradient id="s" cx="0.32" cy="0.28" r="0.7">
+      <stop offset="0" stop-color="rgba(255,250,225,0.55)"/>
+      <stop offset="0.7" stop-color="rgba(255,250,225,0)"/>
+    </radialGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="12" fill="#5a3a18"/>
+  <rect x="4" y="4" width="56" height="56" rx="10" fill="url(#b)"/>
+  <rect x="9" y="9" width="46" height="46" rx="7" fill="#a06028" opacity="0.55"/>
+  <rect x="10" y="10" width="44" height="44" rx="6" fill="url(#b)"/>
+  <g fill="#5a3514">
+    <rect x="14" y="15" width="36" height="11" rx="2"/>
+    <rect x="26" y="15" width="12" height="34" rx="2"/>
+  </g>
+  <rect x="4" y="4" width="56" height="56" rx="10" fill="url(#s)"/>
+</svg>
