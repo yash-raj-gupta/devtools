@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { JsonLd } from "@/components/json-ld";
@@ -59,6 +60,7 @@ export default async function ToolPage({
   const tool = getTool(slug);
   if (!tool) notFound();
   const { Component } = tool;
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
 
   const toolUrl = `${siteConfig.url}/tools/${tool.slug}`;
   const jsonLd = {
@@ -109,8 +111,8 @@ export default async function ToolPage({
 
   return (
     <>
-      <JsonLd data={jsonLd} />
-      <JsonLd data={breadcrumbs} />
+      <JsonLd data={jsonLd} nonce={nonce} />
+      <JsonLd data={breadcrumbs} nonce={nonce} />
       <ToolShell tool={tool}>
         <Component />
       </ToolShell>

@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import Link from "next/link";
 import { Logo } from "@/components/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -108,17 +109,21 @@ const orgJsonLd = {
   logo: `${siteConfig.url}/icon.svg`,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        <JsonLd data={websiteJsonLd} />
-        <JsonLd data={orgJsonLd} />
+        <script
+          nonce={nonce}
+          dangerouslySetInnerHTML={{ __html: themeScript }}
+        />
+        <JsonLd data={websiteJsonLd} nonce={nonce} />
+        <JsonLd data={orgJsonLd} nonce={nonce} />
       </head>
       <body className="min-h-screen flex flex-col">
         <header className="sticky top-0 z-30 backdrop-blur-md skeuo-header-band">

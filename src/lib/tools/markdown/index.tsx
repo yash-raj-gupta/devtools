@@ -1,8 +1,20 @@
 "use client";
 
+import DOMPurify from "dompurify";
 import { marked } from "marked";
 import { useEffect, useState } from "react";
 import { CopyButton, FieldRow, SegmentedControl, Textarea } from "@/components/ui";
+
+// Marked v8+ removed its sanitizer — every render goes through DOMPurify so
+// pasted markdown like `<img src=x onerror=alert(1)>` can't execute in our
+// origin (where it could read localStorage, hit fetch, etc).
+function sanitize(html: string): string {
+  return DOMPurify.sanitize(html, {
+    USE_PROFILES: { html: true },
+    FORBID_TAGS: ["style"],
+    FORBID_ATTR: ["onerror", "onload", "onclick"],
+  });
+}
 
 const SAMPLE = `# Hello, world
 
@@ -31,7 +43,9 @@ export default function Component() {
   useEffect(() => {
     let cancelled = false;
     Promise.resolve(marked.parse(src, { gfm: true, breaks: true })).then((h) => {
-      if (!cancelled) setHtml(typeof h === "string" ? h : "");
+      if (cancelled) return;
+      const raw = typeof h === "string" ? h : "";
+      setHtml(sanitize(raw));
     });
     return () => {
       cancelled = true;

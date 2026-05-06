@@ -1,10 +1,12 @@
+import { headers } from "next/headers";
 import { JsonLd } from "@/components/json-ld";
 import { SearchBox } from "@/components/search-box";
 import { ToolCard } from "@/components/tool-card";
 import { siteConfig } from "@/lib/site-config";
 import { categoryOrder, tools } from "@/lib/tools/registry";
 
-export default function Page() {
+export default async function Page() {
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
   const grouped = new Map<string, typeof tools>();
   for (const c of categoryOrder) grouped.set(c, []);
   for (const t of tools) grouped.get(t.category)?.push(t);
@@ -35,7 +37,7 @@ export default function Page() {
 
   return (
     <>
-      <JsonLd data={collectionJsonLd} />
+      <JsonLd data={collectionJsonLd} nonce={nonce} />
       <div className="mx-auto max-w-5xl px-4 sm:px-6 py-10 sm:py-14">
         <div className="max-w-2xl">
           <h1
