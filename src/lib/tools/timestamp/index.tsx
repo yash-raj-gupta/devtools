@@ -37,7 +37,7 @@ export default function Component() {
           <div className="mono text-lg">{now}</div>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={() => setTs(String(now))}>
+          <Button size="sm" onClick={() => setTs(String(now))}>
             Use as input
           </Button>
           <CopyButton value={String(now)} />

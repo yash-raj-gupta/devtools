@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Logo } from "@/components/logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,47 +16,55 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://toolbench.app"),
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+// Inline theme script: applies the saved theme before paint to prevent flash.
+const themeScript = `
+(function(){try{
+  var m = localStorage.getItem('tb-theme');
+  if(m === 'light' || m === 'dark') document.documentElement.setAttribute('data-theme', m);
+}catch(e){}})();`;
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="min-h-screen flex flex-col">
-        <header className="sticky top-0 z-30 backdrop-blur bg-[color:var(--color-bg)]/80 border-b">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6 h-14 flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2 group">
-              <span className="inline-block size-6 rounded-md bg-[color:var(--color-accent)] grid place-items-center text-[color:var(--color-accent-fg)] font-bold text-xs">
-                T
-              </span>
-              <span className="font-semibold tracking-tight">Toolbench</span>
-              <span className="text-[color:var(--color-muted)] text-xs hidden sm:inline">
-                · dev utilities
-              </span>
+        <header className="sticky top-0 z-30 backdrop-blur-md skeuo-header-band">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6 h-16 flex items-center justify-between">
+            <Link href="/" className="flex items-center group">
+              <Logo />
             </Link>
-            <nav className="flex items-center gap-4 text-sm">
+            <nav className="flex items-center gap-2 sm:gap-3 text-sm">
               <Link
                 href="/"
-                className="text-[color:var(--color-muted)] hover:text-[color:var(--color-fg)] transition"
+                className="hidden sm:inline-flex skeuo-btn skeuo-btn-ghost skeuo-btn-sm"
               >
                 All tools
               </Link>
-              <a
-                href="https://github.com"
-                target="_blank"
-                rel="noreferrer"
-                className="text-[color:var(--color-muted)] hover:text-[color:var(--color-fg)] transition"
-              >
-                GitHub
-              </a>
+              <ThemeToggle />
             </nav>
           </div>
         </header>
         <main className="flex-1">{children}</main>
-        <footer className="border-t mt-16">
-          <div className="mx-auto max-w-5xl px-4 sm:px-6 py-6 flex flex-col sm:flex-row gap-2 sm:items-center justify-between text-xs text-[color:var(--color-muted)]">
-            <div>
-              Toolbench · Everything runs in your browser. No tracking, no
-              uploads.
+        <footer className="mt-16">
+          <div className="mx-auto max-w-5xl px-4 sm:px-6 py-6">
+            <div
+              className="skeuo-panel px-4 py-3 flex flex-col sm:flex-row gap-2 sm:items-center justify-between text-xs"
+              style={{ color: "var(--muted)" }}
+            >
+              <div>
+                <span className="skeuo-emboss font-medium" style={{ color: "var(--fg-soft)" }}>
+                  Toolbench
+                </span>{" "}
+                · Everything runs in your browser. No tracking, no uploads.
+              </div>
+              <div>Built with Next.js</div>
             </div>
-            <div>Built with Next.js</div>
           </div>
         </footer>
       </body>

@@ -33,7 +33,7 @@ export default function Component() {
         <Button variant="accent" onClick={() => setList(generate(count))}>
           Generate
         </Button>
-        <Button variant="outline" onClick={() => setList(generate(count))}>
+        <Button onClick={() => setList(generate(count))}>
           Regenerate
         </Button>
       </div>

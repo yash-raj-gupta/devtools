@@ -10,16 +10,19 @@ export default function Page() {
   return (
     <div className="mx-auto max-w-5xl px-4 sm:px-6 py-10 sm:py-14">
       <div className="max-w-2xl">
-        <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">
-          Fast, no-nonsense developer tools.
+        <h1
+          className="serif text-4xl sm:text-5xl font-semibold tracking-tight skeuo-emboss"
+          style={{ color: "var(--fg)" }}
+        >
+          A workshop of small, sharp tools.
         </h1>
-        <p className="mt-3 text-[color:var(--color-muted)]">
+        <p className="mt-3 text-base" style={{ color: "var(--muted)" }}>
           A growing collection of utilities you reach for every day. Everything
           runs in your browser — no uploads, no tracking.
         </p>
       </div>
 
-      <div className="mt-7">
+      <div className="mt-8">
         <SearchBox />
       </div>
 
@@ -29,7 +32,10 @@ export default function Page() {
           if (list.length === 0) return null;
           return (
             <section key={cat} data-tool-section>
-              <h2 className="text-xs font-medium uppercase tracking-wider text-[color:var(--color-muted)] mb-3">
+              <h2
+                className="text-[11px] font-semibold uppercase tracking-[0.18em] mb-3 skeuo-emboss"
+                style={{ color: "var(--accent-deep)" }}
+              >
                 {cat}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -42,8 +48,8 @@ export default function Page() {
         })}
         <div
           data-empty-state
-          style={{ display: "none" }}
-          className="text-sm text-[color:var(--color-muted)]"
+          style={{ display: "none", color: "var(--muted)" }}
+          className="text-sm"
         >
           No tools match your search. Try a different keyword.
         </div>

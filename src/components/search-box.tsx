@@ -16,25 +16,30 @@ export function SearchBox() {
       el.style.display = match ? "" : "none";
       if (match) anyMatch = true;
     });
-    document.querySelectorAll<HTMLElement>("[data-tool-section]").forEach((sec) => {
-      const visible = sec.querySelector<HTMLElement>(
-        '[data-tool-card]:not([style*="display: none"])',
-      );
-      sec.style.display = visible ? "" : "none";
-    });
+    document
+      .querySelectorAll<HTMLElement>("[data-tool-section]")
+      .forEach((sec) => {
+        const visible = sec.querySelector<HTMLElement>(
+          '[data-tool-card]:not([style*="display: none"])',
+        );
+        sec.style.display = visible ? "" : "none";
+      });
     const empty = document.querySelector<HTMLElement>("[data-empty-state]");
     if (empty) empty.style.display = term && !anyMatch ? "" : "none";
   }, [q]);
 
   return (
     <div className="relative max-w-xl">
-      <Search className="size-4 absolute left-3 top-1/2 -translate-y-1/2 text-[color:var(--color-muted)]" />
+      <Search
+        className="size-4 absolute left-3 top-1/2 -translate-y-1/2"
+        style={{ color: "var(--muted)" }}
+      />
       <input
         autoFocus
         value={q}
         onChange={(e) => setQ(e.target.value)}
-        placeholder="Search tools — try 'json', 'hash', 'uuid'…"
-        className="h-11 w-full rounded-lg border bg-[color:var(--color-surface)] pl-9 pr-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--color-accent)]/40"
+        placeholder="Search tools — try 'json', 'qr', 'aes'…"
+        className="skeuo-input h-11 pl-9"
       />
     </div>
   );

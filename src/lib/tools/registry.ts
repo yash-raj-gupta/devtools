@@ -1,48 +1,69 @@
 import {
+  AlignLeft,
+  ArrowLeftRight,
   Binary,
   Boxes,
   Braces,
+  CalendarClock,
   CaseSensitive,
   Clock,
   Code2,
+  FileImage,
   FileJson,
+  FileSpreadsheet,
+  FileText,
   Fingerprint,
+  GitCompare,
   Hash,
+  Key,
   KeyRound,
   Link2,
+  Lock,
   Palette,
+  QrCode,
   Regex,
   ShieldCheck,
+  ShieldEllipsis,
+  TextSelect,
   Type,
 } from "lucide-react";
 
 import type { ToolCategory, ToolDefinition } from "./types";
 
-// Each tool file is a client component (its module has "use client").
-// Metadata lives here on the server so we can serialize it across the RSC
-// boundary; only the component references travel as client refs.
+import Aes from "./aes";
 import Base32 from "./base32";
 import Base64 from "./base64";
 import CaseTool from "./case";
 import Color from "./color";
+import Cron from "./cron";
+import Csv from "./csv";
+import Diff from "./diff";
+import Ed25519 from "./ed25519-keys";
 import HashTool from "./hash";
 import Hex from "./hex";
+import Hmac from "./hmac";
 import Html from "./html";
+import ImageDataUrl from "./image-data-url";
 import Json from "./json";
 import Jwt from "./jwt";
 import Lorem from "./lorem";
+import Markdown from "./markdown";
+import NumberBase from "./number-base";
 import Password from "./password";
+import QrCodeTool from "./qrcode";
 import RegexTool from "./regex";
+import Rsa from "./rsa-keys";
+import Slugify from "./slugify";
+import TextStats from "./text-stats";
 import Timestamp from "./timestamp";
 import UrlTool from "./url";
 import Uuid from "./uuid";
+import Yaml from "./yaml";
 
-// ── Add a new tool ────────────────────────────────────────────────────────
-// 1. Create src/lib/tools/<slug>/index.tsx that exports a default React
-//    component with "use client" at the top.
-// 2. Import it above and add an entry to the array below.
-// ──────────────────────────────────────────────────────────────────────────
+// Add a tool: write src/lib/tools/<slug>/index.tsx (a "use client" module that
+// default-exports a React component) and add an entry to the array below.
 export const tools: ToolDefinition[] = [
+  // ── Encode / Decode ──────────────────────────────────────────────────
   {
     slug: "base64",
     name: "Base64 Encode / Decode",
@@ -98,6 +119,17 @@ export const tools: ToolDefinition[] = [
     Component: Jwt,
   },
   {
+    slug: "image-data-url",
+    name: "Image ↔ Data URL",
+    description: "Drop an image to get a base64 data URL, or paste a data URL to preview it.",
+    category: "Encode / Decode",
+    keywords: ["image", "data url", "base64", "embed", "png", "jpg", "svg"],
+    icon: FileImage,
+    Component: ImageDataUrl,
+  },
+
+  // ── Crypto & Hashing ────────────────────────────────────────────────
+  {
     slug: "hash",
     name: "Hash Generator",
     description: "Compute SHA-1, SHA-256, SHA-384 and SHA-512 digests of any text. Powered by Web Crypto.",
@@ -106,6 +138,44 @@ export const tools: ToolDefinition[] = [
     icon: Fingerprint,
     Component: HashTool,
   },
+  {
+    slug: "hmac",
+    name: "HMAC Generator",
+    description: "Sign messages with HMAC-SHA-256/384/512/SHA-1 using a shared secret. Hex + base64 output.",
+    category: "Crypto & Hashing",
+    keywords: ["hmac", "sign", "mac", "sha", "secret", "auth"],
+    icon: ShieldEllipsis,
+    Component: Hmac,
+  },
+  {
+    slug: "aes",
+    name: "AES-256-GCM Encrypt / Decrypt",
+    description: "Encrypt or decrypt text with a passphrase. PBKDF2-derived key, fresh salt + IV per message.",
+    category: "Crypto & Hashing",
+    keywords: ["aes", "gcm", "encrypt", "decrypt", "passphrase", "pbkdf2"],
+    icon: Lock,
+    Component: Aes,
+  },
+  {
+    slug: "rsa-keys",
+    name: "RSA Keypair Generator",
+    description: "Generate 2048 / 3072 / 4096-bit RSA keypairs and export them as PEM (PKCS#8 + SPKI).",
+    category: "Crypto & Hashing",
+    keywords: ["rsa", "keypair", "pem", "pkcs8", "spki", "public", "private"],
+    icon: Key,
+    Component: Rsa,
+  },
+  {
+    slug: "ed25519-keys",
+    name: "Ed25519 Keypair Generator",
+    description: "Generate modern, fast Ed25519 keypairs and export them as PEM (PKCS#8 + SPKI).",
+    category: "Crypto & Hashing",
+    keywords: ["ed25519", "ssh", "keypair", "elliptic", "curve", "pem"],
+    icon: Key,
+    Component: Ed25519,
+  },
+
+  // ── Generators ──────────────────────────────────────────────────────
   {
     slug: "uuid",
     name: "UUID Generator",
@@ -125,6 +195,26 @@ export const tools: ToolDefinition[] = [
     Component: Password,
   },
   {
+    slug: "qrcode",
+    name: "QR Code Generator",
+    description: "Generate QR codes from any text or URL, with custom size, error correction, and colors.",
+    category: "Generators",
+    keywords: ["qr", "qrcode", "barcode", "png"],
+    icon: QrCode,
+    Component: QrCodeTool,
+  },
+  {
+    slug: "lorem",
+    name: "Lorem Ipsum Generator",
+    description: "Generate placeholder text in paragraphs, sentences, or words.",
+    category: "Generators",
+    keywords: ["lorem", "ipsum", "placeholder", "filler", "dummy"],
+    icon: Type,
+    Component: Lorem,
+  },
+
+  // ── Formatters ──────────────────────────────────────────────────────
+  {
     slug: "json",
     name: "JSON Format & Validate",
     description: "Pretty-print, minify, and validate JSON. Errors point to the broken character.",
@@ -134,13 +224,33 @@ export const tools: ToolDefinition[] = [
     Component: Json,
   },
   {
-    slug: "regex",
-    name: "Regex Tester",
-    description: "Test JavaScript-flavored regular expressions with live highlighting and match details.",
-    category: "Text",
-    keywords: ["regex", "regexp", "pattern", "match", "test"],
-    icon: Regex,
-    Component: RegexTool,
+    slug: "markdown",
+    name: "Markdown Preview",
+    description: "Render GitHub-flavored markdown live, side-by-side with the source. Toggle to view HTML.",
+    category: "Formatters",
+    keywords: ["markdown", "md", "preview", "html", "render", "gfm"],
+    icon: AlignLeft,
+    Component: Markdown,
+  },
+
+  // ── Converters ──────────────────────────────────────────────────────
+  {
+    slug: "yaml",
+    name: "YAML ↔ JSON",
+    description: "Convert between YAML and JSON in either direction.",
+    category: "Converters",
+    keywords: ["yaml", "json", "convert", "parse", "stringify"],
+    icon: ArrowLeftRight,
+    Component: Yaml,
+  },
+  {
+    slug: "csv",
+    name: "CSV ↔ JSON",
+    description: "Convert between CSV and a JSON array of objects, with proper handling of quoted fields.",
+    category: "Converters",
+    keywords: ["csv", "json", "spreadsheet", "table", "convert"],
+    icon: FileSpreadsheet,
+    Component: Csv,
   },
   {
     slug: "timestamp",
@@ -161,6 +271,35 @@ export const tools: ToolDefinition[] = [
     Component: Color,
   },
   {
+    slug: "number-base",
+    name: "Number Base Converter",
+    description: "Convert numbers between binary, octal, decimal, and hexadecimal — instantly, all four at once.",
+    category: "Converters",
+    keywords: ["number", "base", "binary", "octal", "decimal", "hex", "radix"],
+    icon: Binary,
+    Component: NumberBase,
+  },
+  {
+    slug: "cron",
+    name: "Cron Explainer",
+    description: "Translate cron expressions into plain English, with handy presets you can click.",
+    category: "Converters",
+    keywords: ["cron", "schedule", "crontab", "expression"],
+    icon: CalendarClock,
+    Component: Cron,
+  },
+
+  // ── Text ────────────────────────────────────────────────────────────
+  {
+    slug: "regex",
+    name: "Regex Tester",
+    description: "Test JavaScript-flavored regular expressions with live highlighting and match details.",
+    category: "Text",
+    keywords: ["regex", "regexp", "pattern", "match", "test"],
+    icon: Regex,
+    Component: RegexTool,
+  },
+  {
     slug: "case",
     name: "Case Converter",
     description: "Convert text between camelCase, PascalCase, snake_case, kebab-case, CONSTANT_CASE and more.",
@@ -170,13 +309,31 @@ export const tools: ToolDefinition[] = [
     Component: CaseTool,
   },
   {
-    slug: "lorem",
-    name: "Lorem Ipsum Generator",
-    description: "Generate placeholder text in paragraphs, sentences, or words.",
-    category: "Generators",
-    keywords: ["lorem", "ipsum", "placeholder", "filler", "dummy"],
-    icon: Type,
-    Component: Lorem,
+    slug: "slugify",
+    name: "Slugify",
+    description: "Convert any title or sentence into a clean URL-safe slug. Handles accents and punctuation.",
+    category: "Text",
+    keywords: ["slug", "slugify", "url", "permalink", "kebab"],
+    icon: TextSelect,
+    Component: Slugify,
+  },
+  {
+    slug: "diff",
+    name: "Diff Viewer",
+    description: "Compare two blocks of text line-by-line. Added lines are green; removed lines are red.",
+    category: "Text",
+    keywords: ["diff", "compare", "text", "merge"],
+    icon: GitCompare,
+    Component: Diff,
+  },
+  {
+    slug: "text-stats",
+    name: "Text Statistics",
+    description: "Count words, characters, lines, sentences, and estimate reading time as you type.",
+    category: "Text",
+    keywords: ["count", "words", "chars", "stats", "reading time", "wc"],
+    icon: FileText,
+    Component: TextStats,
   },
 ];
 
