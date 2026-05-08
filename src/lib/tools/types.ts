@@ -7,6 +7,7 @@ export type ToolCategory =
   | "Generators"
   | "Formatters"
   | "Converters"
+  | "Files & Documents"
   | "Text";
 
 export interface ToolDefinition {

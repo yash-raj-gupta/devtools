@@ -19,12 +19,16 @@ import {
   KeyRound,
   Link2,
   Lock,
+  FileOutput,
+  ImageDown,
+  Images,
   Palette,
   Quote,
   QrCode,
   Regex,
   ShieldCheck,
   ShieldEllipsis,
+  Sheet,
   Terminal,
   TextSelect,
   Type,
@@ -46,17 +50,21 @@ import HashTool from "./hash";
 import Hex from "./hex";
 import Hmac from "./hmac";
 import Html from "./html";
+import ImageConvert from "./image-convert";
 import ImageDataUrl from "./image-data-url";
+import ImageToPdf from "./image-to-pdf";
 import Json from "./json";
 import Jwt from "./jwt";
 import Lorem from "./lorem";
 import Markdown from "./markdown";
 import NumberBase from "./number-base";
 import Password from "./password";
+import PdfToImages from "./pdf-to-images";
 import QrCodeTool from "./qrcode";
 import RegexTool from "./regex";
 import Rsa from "./rsa-keys";
 import Slugify from "./slugify";
+import Spreadsheet from "./spreadsheet";
 import Stringify from "./stringify";
 import TextStats from "./text-stats";
 import Timestamp from "./timestamp";
@@ -293,6 +301,87 @@ export const tools: ToolDefinition[] = [
     Component: Cron,
   },
 
+  // ── Files & Documents ──────────────────────────────────────────────
+  {
+    slug: "image-convert",
+    name: "Image Format Converter",
+    description:
+      "Convert between PNG, JPEG and WebP. Adjustable quality, optional resize, side-by-side preview, no upload.",
+    category: "Files & Documents",
+    keywords: [
+      "image",
+      "convert",
+      "format",
+      "png",
+      "jpeg",
+      "jpg",
+      "webp",
+      "compress",
+      "resize",
+    ],
+    icon: Images,
+    Component: ImageConvert,
+  },
+  {
+    slug: "image-to-pdf",
+    name: "Image → PDF",
+    description:
+      "Combine one or many images into a single PDF. Reorder pages, choose A4 / Letter / image-sized, set margins.",
+    category: "Files & Documents",
+    keywords: [
+      "image",
+      "pdf",
+      "merge",
+      "combine",
+      "convert",
+      "jpg",
+      "png",
+      "to pdf",
+    ],
+    icon: FileOutput,
+    Component: ImageToPdf,
+  },
+  {
+    slug: "pdf-to-images",
+    name: "PDF → Images",
+    description:
+      "Render every page of a PDF to PNG or JPEG, fully in your browser. Tweak DPI / quality, click any page to download.",
+    category: "Files & Documents",
+    keywords: [
+      "pdf",
+      "image",
+      "extract",
+      "page",
+      "png",
+      "jpeg",
+      "split",
+      "to image",
+    ],
+    icon: ImageDown,
+    Component: PdfToImages,
+  },
+  {
+    slug: "spreadsheet",
+    name: "Spreadsheet Converter",
+    description:
+      "Drop CSV, TSV or XLSX and export as CSV / TSV / JSON / XLSX / HTML / PDF. Sheet picker, header detection, live preview.",
+    category: "Files & Documents",
+    keywords: [
+      "spreadsheet",
+      "csv",
+      "tsv",
+      "xlsx",
+      "excel",
+      "json",
+      "pdf",
+      "html",
+      "convert",
+      "export",
+    ],
+    icon: Sheet,
+    Component: Spreadsheet,
+  },
+
   // ── Text ────────────────────────────────────────────────────────────
   {
     slug: "regex",
@@ -388,6 +477,7 @@ export const categoryOrder: ToolCategory[] = [
   "Generators",
   "Formatters",
   "Converters",
+  "Files & Documents",
   "Text",
 ];
 
