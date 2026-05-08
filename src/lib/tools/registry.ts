@@ -20,10 +20,12 @@ import {
   Link2,
   Lock,
   Palette,
+  Quote,
   QrCode,
   Regex,
   ShieldCheck,
   ShieldEllipsis,
+  Terminal,
   TextSelect,
   Type,
 } from "lucide-react";
@@ -34,6 +36,7 @@ import Aes from "./aes";
 import Base32 from "./base32";
 import Base64 from "./base64";
 import CaseTool from "./case";
+import CmdTeller from "./cmd-teller";
 import Color from "./color";
 import Cron from "./cron";
 import Csv from "./csv";
@@ -54,6 +57,7 @@ import QrCodeTool from "./qrcode";
 import RegexTool from "./regex";
 import Rsa from "./rsa-keys";
 import Slugify from "./slugify";
+import Stringify from "./stringify";
 import TextStats from "./text-stats";
 import Timestamp from "./timestamp";
 import UrlTool from "./url";
@@ -334,6 +338,47 @@ export const tools: ToolDefinition[] = [
     keywords: ["count", "words", "chars", "stats", "reading time", "wc"],
     icon: FileText,
     Component: TextStats,
+  },
+  {
+    slug: "stringify",
+    name: "Stringify / Parse",
+    description:
+      "Escape any text — even huge multi-line input — into a JSON or JS string literal, or parse one back to raw text.",
+    category: "Text",
+    keywords: [
+      "stringify",
+      "escape",
+      "unescape",
+      "json",
+      "string",
+      "literal",
+      "quote",
+      "newline",
+      "parse",
+    ],
+    icon: Quote,
+    Component: Stringify,
+  },
+  {
+    slug: "cmd-teller",
+    name: "Command Teller",
+    description:
+      "Describe what you want to do in plain English and get the matching shell or git command, with variants.",
+    category: "Text",
+    keywords: [
+      "command",
+      "cmd",
+      "terminal",
+      "shell",
+      "bash",
+      "git",
+      "cheatsheet",
+      "lookup",
+      "reference",
+      "natural language",
+    ],
+    icon: Terminal,
+    Component: CmdTeller,
   },
 ];
 
