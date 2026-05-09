@@ -1,9 +1,9 @@
 import { tools } from "./tools/registry";
 
-const fallbackUrl = "https://toolbench.app";
+const fallbackUrl = "https://toolbench.yashrajgupta.com";
 
-// NEXT_PUBLIC_SITE_URL lets you point Toolbench at the real domain at build
-// time without touching code. Falls back to the placeholder above.
+// NEXT_PUBLIC_SITE_URL lets you override at build time (e.g. for staging
+// previews). Falls back to the production host above.
 const rawUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || fallbackUrl;
 const url = rawUrl.replace(/\/$/, "");
 
