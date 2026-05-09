@@ -13,11 +13,6 @@ import {
 
 type Format = "image/png" | "image/jpeg";
 
-const FORMAT_LABEL: Record<Format, string> = {
-  "image/png": "PNG",
-  "image/jpeg": "JPEG",
-};
-
 const FORMAT_EXT: Record<Format, string> = {
   "image/png": "png",
   "image/jpeg": "jpg",

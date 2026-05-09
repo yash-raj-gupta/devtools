@@ -19,9 +19,11 @@ import {
   KeyRound,
   Link2,
   Lock,
+  FileArchive,
   FileOutput,
   ImageDown,
   Images,
+  ImageMinus,
   Palette,
   Quote,
   QrCode,
@@ -46,10 +48,12 @@ import Cron from "./cron";
 import Csv from "./csv";
 import Diff from "./diff";
 import Ed25519 from "./ed25519-keys";
+import FileCompress from "./file-compress";
 import HashTool from "./hash";
 import Hex from "./hex";
 import Hmac from "./hmac";
 import Html from "./html";
+import ImageCompress from "./image-compress";
 import ImageConvert from "./image-convert";
 import ImageDataUrl from "./image-data-url";
 import ImageToPdf from "./image-to-pdf";
@@ -323,6 +327,28 @@ export const tools: ToolDefinition[] = [
     Component: ImageConvert,
   },
   {
+    slug: "image-compress",
+    name: "Image Compressor",
+    description:
+      "Squeeze any image down to a target file size in KB or MB. Picks the highest quality that fits, auto-resizes if it has to.",
+    category: "Files & Documents",
+    keywords: [
+      "image",
+      "compress",
+      "shrink",
+      "size",
+      "kb",
+      "mb",
+      "target",
+      "budget",
+      "jpeg",
+      "webp",
+      "reduce",
+    ],
+    icon: ImageMinus,
+    Component: ImageCompress,
+  },
+  {
     slug: "image-to-pdf",
     name: "Image → PDF",
     description:
@@ -359,6 +385,27 @@ export const tools: ToolDefinition[] = [
     ],
     icon: ImageDown,
     Component: PdfToImages,
+  },
+  {
+    slug: "file-compress",
+    name: "File Compressor",
+    description:
+      "Compress or decompress any file with the browser's native gzip / deflate. Live ratio + savings readout.",
+    category: "Files & Documents",
+    keywords: [
+      "compress",
+      "decompress",
+      "gzip",
+      "deflate",
+      "shrink",
+      "size",
+      "reduce",
+      "zip",
+      "archive",
+      "any file",
+    ],
+    icon: FileArchive,
+    Component: FileCompress,
   },
   {
     slug: "spreadsheet",
